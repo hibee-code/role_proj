@@ -3,6 +3,9 @@ import { DataTypes, Model } from 'sequelize';
 
 // Define the User model
 class User extends Model {
+    setRoles(roles: any) {
+        throw new Error('Method not implemented.');
+    }
     public id!: number;
     public username!: string;
     public email!: string;
@@ -67,6 +70,7 @@ User.init(
     tableName: 'users',
   }
 );
+
 
 // Call sequelize.sync() to synchronize the model with the database schema
 sequelize.sync().then(() => {

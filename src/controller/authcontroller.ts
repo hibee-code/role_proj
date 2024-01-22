@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import speakeasy from 'speakeasy';
-import { User } from '../model/user';
+import { User } from '../model/adminUser';
 
 // Generate a secret key for MFA
 // const generateMfaSecret = () => {
