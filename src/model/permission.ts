@@ -3,13 +3,18 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../config/db';
 
-class Permission extends Model {
+export class Permission extends Model {
   public id!: number;
   public name!: string;
 }
 
 // Initialize the Permission model
-Permission.init({
+Permission.init( {
+  id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -27,4 +32,3 @@ sequelize.sync().then(() => {
     console.log('Database synchronized successfully.');
   });
   
-  export { Permission };

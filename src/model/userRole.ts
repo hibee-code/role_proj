@@ -1,7 +1,7 @@
 import { Model } from 'sequelize';
 import { sequelize } from '../config/db';
 
-class UserRole extends Model {
+export class UserRole extends Model {
   public userId!: number;
   public roleId!: number;
 }

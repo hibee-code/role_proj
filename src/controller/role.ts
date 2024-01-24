@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import { User } from '../model/adminUser';
+import { Role } from '../model/role';
+import { Permission } from '../model/permission'
 
 export const asign_role =async (req: Request, res: Response) => {
   try {
-    const { username, roleNames } = req.body;
-    const user = await User.create({ username });
-    const roles = await roles.findAll({ where: { name: roleNames } });
-    await user.setRoles(roles);
+    const { userId, role } = req.body;
+    const user = await User.create({ userId });
+    const roles = await Role.findAll({ where: { name: Role.name } });
+    user.setRoles(roles);
 
-    res.status(201).json({ message: `Roles assigned to user ${username} successfully` });
+    res.status(201).json({ message: `Roles assigned to user ${userId} successfully` });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -18,7 +20,7 @@ export const asign_role =async (req: Request, res: Response) => {
 
  export const getAllRole = async (_req: Request, res: Response) => {
   try {
-    const roles = await roles.findAll({ include: Permissions });
+    const roles = await Role.findAll({ include: Permission });
     res.json(roles);
   } catch (error) {
     console.error(error);
@@ -28,10 +30,10 @@ export const asign_role =async (req: Request, res: Response) => {
 
  export const create = async (req: Request, res: Response) => {
   try {
-    const { name, permissionNames } = req.body;
-    const permissions = await permissions.findAll({ where: { name: permissionNames } });
-    const role = await role.create({ name });
-    await role.setPermissions(permissions);
+    const { name, permissionId } = req.body;
+    const permissions = await Permission.findAll({ where: { name: permissionId } });
+    const roles = await Role.create({ name });
+    await roles.setPermissions(permissions);
 
     res.status(201).json({ message: `Role ${name} created successfully` });
   } catch (error) {
@@ -44,11 +46,11 @@ export const updateRole = async (req: Request, res: Response) => {
   try {
     const { name } = req.params;
     const { permissionNames } = req.body;
-    const role = await role.findOne({ where: { name } });
+    const roles = await Role.findOne({ where: { name } });
 
-    if (role) {
-      const permissions = await permissions.findAll({ where: { name: permissionNames } });
-      await role.setPermissions(permissions);
+    if (roles) {
+      const permissions = await Permission.findAll({ where: { name: permissionNames } });
+      await Role.setPermissions(permissions);
       res.json({ message: `Role ${name} updated successfully` });
     } else {
       res.status(404).json({ error: 'Role not found' });
@@ -61,12 +63,12 @@ export const updateRole = async (req: Request, res: Response) => {
 
 export const deleteRole = async (req: Request, res: Response) => {
   try {
-    const { name } = req.params;
-    const role = await role.findOne({ where: { name } });
+    const { id } = req.params;
+    const roles = await Role.findOne({ where: { id } });
 
-    if (role) {
-      await role.destroy();
-      res.json({ message: `Role ${name} deleted successfully` });
+    if (roles) {
+      await roles.destroy();
+      res.json({ message: `Role ${id} deleted successfully` });
     } else {
       res.status(404).json({ error: 'Role not found' });
     }
@@ -74,6 +76,4 @@ export const deleteRole = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});
-
-export default router;
+};

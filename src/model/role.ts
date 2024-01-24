@@ -1,18 +1,27 @@
 import { sequelize } from '../config';
 import { Model, DataTypes } from 'sequelize';
 
-class Role extends Model {
+export class Role extends Model {
+  static setPermissions(permissions: any) {
+    throw new Error('Method not implemented.');
+  }
   public id!: number;
   public name!: string;
+  setPermissions: any;
 }
 
 // Initialize the Role model
 Role.init({
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
 }, {
     sequelize,
     modelName: 'role',
@@ -22,7 +31,5 @@ Role.init({
 
 sequelize.sync().then(() => {
 console.log('Database synchronized successfully.');
-  });
-  export { Role };
+ });
 
-export default Role;
